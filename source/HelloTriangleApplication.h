@@ -1,6 +1,8 @@
 #pragma once
 
 #define GLFW_INCLUDE_VULKAN
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEFAULT_ALIGNED_GENTYPES
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <stdexcept>
@@ -13,6 +15,8 @@
 #include <fstream>
 #include <glm/glm.hpp>
 #include <array>
+#include <glm/gtc/matrix_transform.hpp>
+#include <chrono>
 
 namespace app {
 
@@ -63,6 +67,12 @@ namespace app {
 
             return attributeDescriptions;
         }
+    };
+
+    struct UniformBufferObject {
+        glm::mat4 model;
+        glm::mat4 view;
+        glm::mat4 proj;
     };
 
     const std::vector<Vertex> vertices = {
@@ -125,6 +135,7 @@ namespace app {
         VkExtent2D swapChainExtent;
         std::vector<VkImageView> swapChainImageViews;
         VkRenderPass renderPass;
+        VkDescriptorSetLayout descriptorSetLayout;
         VkPipelineLayout pipelineLayout;
         VkPipeline graphicsPipeline;
         std::vector<VkFramebuffer> swapChainFramebuffers;
@@ -135,10 +146,18 @@ namespace app {
         std::vector<VkFence> inFlightFences;
         uint32_t currentFrame = 0;
         bool framebufferResized = false;
+
         VkBuffer vertexBuffer;
         VkDeviceMemory vertexBufferMemory;
         VkBuffer indexBuffer;
         VkDeviceMemory indexBufferMemory;
+
+        std::vector<VkBuffer> uniformBuffers;
+        std::vector<VkDeviceMemory> uniformBuffersMemory;
+        std::vector<void*> uniformBuffersMapped;
+
+        VkDescriptorPool descriptorPool;
+        std::vector<VkDescriptorSet> descriptorSets;
 
     public:
         void run();
@@ -196,6 +215,16 @@ namespace app {
         uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
         void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
+
+        void createDescriptorSetLayout();
+
+        void createUniformBuffers();
+
+        void updateUniformBuffer();
+
+        void createDescriptorPool();
+
+        void createDescriptorSets();
 
     };
 
