@@ -1,7 +1,7 @@
-#include "source/HelloTriangleApplication.h"
+#include "source/App.h"
 
 int main() {
-    app::HelloTriangleApplication app{};
+    vkp::App app{};
 
     try {
         app.run();

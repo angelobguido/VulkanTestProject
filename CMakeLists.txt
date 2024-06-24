@@ -13,8 +13,9 @@ find_package(glfw3 3.3 REQUIRED)
 find_package(glm REQUIRED)
 
 add_executable(vulkan main.cpp
-        source/HelloTriangleApplication.cpp
-        source/HelloTriangleApplication.h)
+        source/App.cpp
+        source/App.h
+        source/stb_image/stb_image.h)
 
 # Link Vulkan, GLFW and GLM to the executable
 target_link_libraries(vulkan Vulkan::Vulkan)
