@@ -15,7 +15,8 @@ find_package(glm REQUIRED)
 add_executable(vulkan main.cpp
         source/App.cpp
         source/App.h
-        source/stb_image/stb_image.h)
+        source/stb_image/stb_image.h
+        source/obj_loader/tiny_obj_loader.h)
 
 # Link Vulkan, GLFW and GLM to the executable
 target_link_libraries(vulkan Vulkan::Vulkan)
